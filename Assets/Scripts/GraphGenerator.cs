@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System.Linq;
 using System;
+using UnityEditor;
 
 struct Point
 {
@@ -26,8 +27,7 @@ public class GraphGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        readData();
-        plot(accList);
+
     }
 
     // Update is called once per frame
@@ -68,9 +68,10 @@ public class GraphGenerator : MonoBehaviour
         }
     }
 
-    private void readData()
+    private void readData(string filePath)
     {
-        StreamReader sr = new StreamReader(Application.dataPath + "/Resources/Data/" + filename);
+        StreamReader sr = new StreamReader(filePath);
+        // StreamReader sr = new StreamReader(Application.dataPath + "/Resources/Data/" + filename);
         sr.ReadLine();
         while (!sr.EndOfStream)
         {
@@ -86,5 +87,11 @@ public class GraphGenerator : MonoBehaviour
             p.localTime = long.Parse(cell[4]);
             accList.Add(p);
         }
+    }
+
+    public void OnClickSelectButton()
+    {
+        readData(EditorUtility.OpenFilePanel("Select csv file", "", "csv"));
+        plot(accList);
     }
 }
