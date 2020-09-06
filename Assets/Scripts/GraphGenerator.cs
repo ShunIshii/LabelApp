@@ -18,7 +18,7 @@ public struct Point
 
 public class GraphGenerator : MonoBehaviour
 {
-    private string filename = "eSense_003_20191217_044203.csv";
+    private CurrentBarBehaviour currentBarBehaviour;
     public List<Point> accList = new List<Point>();
     public List<GameObject> pointsList;
     [SerializeField] private GameObject pointPrefab;
@@ -28,7 +28,7 @@ public class GraphGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        currentBarBehaviour = GameObject.Find("CurrentBar").GetComponent<CurrentBarBehaviour>();
     }
 
     // Update is called once per frame
@@ -94,5 +94,6 @@ public class GraphGenerator : MonoBehaviour
     {
         readData(EditorUtility.OpenFilePanel("Select csv file", "", "csv"));
         plot(accList);
+        currentBarBehaviour.SetGraphInfo(accList.Count);
     }
 }
