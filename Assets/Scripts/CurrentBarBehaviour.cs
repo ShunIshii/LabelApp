@@ -11,7 +11,7 @@ public class CurrentBarBehaviour : MonoBehaviour
     private int arrayIndex = 0;
     private int startIndex = 0;
     private int arrayLength = 0;
-    private bool isActive = false;
+    private bool isMoving = false;
 
     [SerializeField] private GameObject graphPanel;
     private GraphGenerator graphGenerator;
@@ -26,14 +26,14 @@ public class CurrentBarBehaviour : MonoBehaviour
         gameManager = gameManagerObj.GetComponent<GameManager>();
 
         var graphWidth = graphPanel.GetComponent<RectTransform>().sizeDelta.x;
-        transform.position = transform.position + new Vector3(-(graphWidth / 2), 0, 0);
-        barStartPos = transform.position;
+        barStartPos = transform.position + new Vector3(-(graphWidth / 2), 0, 0);
+        transform.position = barStartPos;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isActive)
+        if (isMoving)
         {
             time += Time.deltaTime;
             while (graphGenerator.accList[arrayIndex].elaspedTime < time)
@@ -48,19 +48,24 @@ public class CurrentBarBehaviour : MonoBehaviour
         }
     }
 
-    public void VideoStart()
+    public void CurrentBarStart()
     {
-        isActive = true;
+        isMoving = true;
     }
 
-    public void VideoPause()
+    public void CurrentBarPause()
     {
-        isActive = false;
+        isMoving = false;
     }
 
     public void CurrentBarStop()
     {
-        isActive = false;
+        isMoving = false;
+        SetStartPos();
+    }
+
+    private void SetStartPos()
+    {
         time = startTime;
         arrayIndex = startIndex;
         transform.position = barStartPos;

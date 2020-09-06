@@ -23,12 +23,11 @@ public class GraphGenerator : MonoBehaviour
     public List<GameObject> pointsList;
     [SerializeField] private GameObject pointPrefab;
     [SerializeField] private GameObject linePrefab;
-    [SerializeField] private GameObject graphPanel;
 
     // Start is called before the first frame update
     void Start()
     {
-        currentBarBehaviour = GameObject.Find("CurrentBar").GetComponent<CurrentBarBehaviour>();
+        currentBarBehaviour = GetComponentInChildren<CurrentBarBehaviour>();
     }
 
     // Update is called once per frame
@@ -39,31 +38,31 @@ public class GraphGenerator : MonoBehaviour
 
     private void plot(List<Point> points)
     {
-        var graphWidth = graphPanel.GetComponent<RectTransform>().sizeDelta.x;
-        var graphHeight = graphPanel.GetComponent<RectTransform>().sizeDelta.y;
-        var fs = points.Count / points.Last().elaspedTime;
-        var interval = graphWidth / points.Count;
-        var startPos = -(graphWidth / 2);
+        float graphWidth = GetComponent<RectTransform>().sizeDelta.x;
+        float graphHeight = GetComponent<RectTransform>().sizeDelta.y;
+        double fs = points.Count / points.Last().elaspedTime;
+        float interval = graphWidth / points.Count;
+        float startPos = -(graphWidth / 2);
         Debug.Log("Fs = " + (int)fs + "Hz");
 
         pointsList = new List<GameObject>();
         foreach (var p in points.Select((value, index) => new { value, index}))
         {
-            pointsList.Add(Instantiate(pointPrefab, this.transform.position + new Vector3(startPos + interval * p.index, p.value.y * 5, 0), Quaternion.identity, graphPanel.transform));
+            pointsList.Add(Instantiate(pointPrefab, transform.position + new Vector3(startPos + interval * p.index, p.value.y * 5, 0), Quaternion.identity, transform));
             if (p.index != 0)
             {
-                var pointA = pointsList[pointsList.Count - 2];
-                var pointB = pointsList[pointsList.Count - 1];
+                GameObject pointA = pointsList[pointsList.Count - 2];
+                GameObject pointB = pointsList[pointsList.Count - 1];
 
-                var dtPos = pointB.transform.position - pointA.transform.position;
-                var newPosition = pointA.transform.position + dtPos / 2;
-                var newRotation = Math.Atan2(dtPos.y, dtPos.x) * 180d / Math.PI;
+                Vector3 dtPos = pointB.transform.position - pointA.transform.position;
+                Vector3 newPosition = pointA.transform.position + dtPos / 2;
+                double newRotation = Math.Atan2(dtPos.y, dtPos.x) * 180d / Math.PI;
 
-                var line = Instantiate(linePrefab, newPosition, Quaternion.Euler(0, 0, (float)newRotation), graphPanel.transform);
+                GameObject line = Instantiate(linePrefab, newPosition, Quaternion.Euler(0, 0, (float)newRotation), transform);
                 
                 // Chage line length
-                var t = line.GetComponent<RectTransform>();
-                var lineLength = Math.Sqrt(Math.Pow(dtPos.x, 2) + Math.Pow(dtPos.y, 2));
+                RectTransform t = line.GetComponent<RectTransform>();
+                double lineLength = Math.Sqrt(Math.Pow(dtPos.x, 2) + Math.Pow(dtPos.y, 2));
                 t.sizeDelta = new Vector2((float)lineLength, t.sizeDelta.y);
             }
         }
@@ -72,7 +71,6 @@ public class GraphGenerator : MonoBehaviour
     private void readData(string filePath)
     {
         StreamReader sr = new StreamReader(filePath);
-        // StreamReader sr = new StreamReader(Application.dataPath + "/Resources/Data/" + filename);
         sr.ReadLine();
         while (!sr.EndOfStream)
         {
