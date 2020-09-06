@@ -7,11 +7,13 @@ using UnityEditor;
 public class VideoManager : MonoBehaviour
 {
     private VideoPlayer videoPlayer;
+    private CurrentBarBehaviour currentBarBehaviour;
 
     // Start is called before the first frame update
     void Start()
     {
         videoPlayer = GetComponent<VideoPlayer>();
+        currentBarBehaviour = GameObject.Find("CurrentBar").GetComponent<CurrentBarBehaviour>();
     }
 
     // Update is called once per frame
@@ -25,11 +27,19 @@ public class VideoManager : MonoBehaviour
         if (!videoPlayer.isPlaying)
         {
             videoPlayer.Play();
+            currentBarBehaviour.VideoStart();
         }
         else
         {
             videoPlayer.Pause();
+            currentBarBehaviour.VideoPause();
         }
+    }
+
+    public void OnClickResetButton()
+    {
+        videoPlayer.Stop();
+        currentBarBehaviour.VideoReset();
     }
 
     public void OnClickSelectButton()

@@ -6,7 +6,7 @@ using System.Linq;
 using System;
 using UnityEditor;
 
-struct Point
+public struct Point
 {
     public float x;
     public float y;
@@ -19,7 +19,8 @@ struct Point
 public class GraphGenerator : MonoBehaviour
 {
     private string filename = "eSense_003_20191217_044203.csv";
-    private List<Point> accList = new List<Point>();
+    public List<Point> accList = new List<Point>();
+    public List<GameObject> pointsList;
     [SerializeField] private GameObject pointPrefab;
     [SerializeField] private GameObject linePrefab;
     [SerializeField] private GameObject graphPanel;
@@ -45,14 +46,14 @@ public class GraphGenerator : MonoBehaviour
         var startPos = -(graphWidth / 2);
         Debug.Log("Fs = " + (int)fs + "Hz");
 
-        List<GameObject> pointObj = new List<GameObject>();
+        pointsList = new List<GameObject>();
         foreach (var p in points.Select((value, index) => new { value, index}))
         {
-            pointObj.Add(Instantiate(pointPrefab, this.transform.position + new Vector3(startPos + interval * p.index, p.value.y * 5, 0), Quaternion.identity, graphPanel.transform));
+            pointsList.Add(Instantiate(pointPrefab, this.transform.position + new Vector3(startPos + interval * p.index, p.value.y * 5, 0), Quaternion.identity, graphPanel.transform));
             if (p.index != 0)
             {
-                var pointA = pointObj[pointObj.Count - 2];
-                var pointB = pointObj[pointObj.Count - 1];
+                var pointA = pointsList[pointsList.Count - 2];
+                var pointB = pointsList[pointsList.Count - 1];
 
                 var dtPos = pointB.transform.position - pointA.transform.position;
                 var newPosition = pointA.transform.position + dtPos / 2;
