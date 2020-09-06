@@ -82,4 +82,12 @@ public class CurrentBarBehaviour : MonoBehaviour
     {
         arrayLength = accListLength;
     }
+
+    public void OnClickPoint(int pointIndex)
+    {
+        GameObject p = graphGenerator.pointsList[pointIndex];
+        transform.position = new Vector3(p.transform.position.x, transform.position.y, transform.position.z);
+        time = (float)graphGenerator.accList[pointIndex].elaspedTime;
+        arrayIndex = pointIndex;
+    }
 }

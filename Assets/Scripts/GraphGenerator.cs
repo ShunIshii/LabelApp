@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System;
 using UnityEditor;
+using UnityEngine.UI;
 
 public struct Point
 {
@@ -48,7 +49,9 @@ public class GraphGenerator : MonoBehaviour
         pointsList = new List<GameObject>();
         foreach (var p in points.Select((value, index) => new { value, index}))
         {
-            pointsList.Add(Instantiate(pointPrefab, transform.position + new Vector3(startPos + interval * p.index, p.value.y * 5, 0), Quaternion.identity, transform));
+            GameObject newPoint = Instantiate(pointPrefab, transform.position + new Vector3(startPos + interval * p.index, p.value.y * 5, 0), Quaternion.identity, transform);
+            newPoint.GetComponent<Button>().onClick.AddListener(() => { currentBarBehaviour.OnClickPoint(p.index); });
+            pointsList.Add(newPoint);
             if (p.index != 0)
             {
                 GameObject pointA = pointsList[pointsList.Count - 2];

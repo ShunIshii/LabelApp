@@ -1411,7 +1411,7 @@ GameObject:
   - component: {fileID: 1061979128}
   - component: {fileID: 1061979127}
   m_Layer: 5
-  m_Name: SetInitButton-Graph
+  m_Name: SetInitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1774,7 +1774,7 @@ GameObject:
   - component: {fileID: 1355277783}
   - component: {fileID: 1355277782}
   m_Layer: 5
-  m_Name: SetInitButton-Video
+  m_Name: SetInitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
