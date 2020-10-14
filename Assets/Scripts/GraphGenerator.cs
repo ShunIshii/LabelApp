@@ -19,7 +19,6 @@ public struct Point
 
 public class GraphGenerator : MonoBehaviour
 {
-    private CurrentBarBehaviour currentBarBehaviour;
     public List<Point> accList = new List<Point>();
     public List<GameObject> pointsList;
     [SerializeField] private GameObject pointPrefab;
@@ -29,7 +28,7 @@ public class GraphGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentBarBehaviour = GetComponentInChildren<CurrentBarBehaviour>();
+        
     }
 
     // Update is called once per frame
@@ -48,10 +47,12 @@ public class GraphGenerator : MonoBehaviour
         Debug.Log("Fs = " + (int)fs + "Hz");
 
         pointsList = new List<GameObject>();
+
+        float height = transform.lossyScale.y * 5;
+
         foreach (var p in points.Select((value, index) => new { value, index}))
         {
-            GameObject newPoint = Instantiate(pointPrefab, transform.position + new Vector3(startPos + interval * p.index, p.value.y * 5, 0), Quaternion.identity, plotsObj.transform);
-            newPoint.GetComponent<Button>().onClick.AddListener(() => { currentBarBehaviour.OnClickPoint(p.index); });
+            GameObject newPoint = Instantiate(pointPrefab, transform.position + new Vector3(startPos + interval * p.index, p.value.y * height, 0), Quaternion.identity, plotsObj.transform);
             pointsList.Add(newPoint);
             if (p.index != 0)
             {
@@ -96,6 +97,5 @@ public class GraphGenerator : MonoBehaviour
     {
         readData(EditorUtility.OpenFilePanel("Select csv file", "", "csv"));
         plot(accList);
-        currentBarBehaviour.SetGraphInfo(accList.Count);
     }
 }

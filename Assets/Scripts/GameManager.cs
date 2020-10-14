@@ -11,9 +11,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject video;
     private VideoManager videoManager;
 
-    [SerializeField] private GameObject currentBar;
-    private CurrentBarBehaviour currentBarBehaviour;
-
     public bool isGaming = false;
 
     // Start is called before the first frame update
@@ -21,7 +18,6 @@ public class GameManager : MonoBehaviour
     {
         graphGenerator = graphPanel.GetComponent<GraphGenerator>();
         videoManager = video.GetComponent<VideoManager>();
-        currentBarBehaviour = currentBar.GetComponent<CurrentBarBehaviour>();
     }
 
     // Update is called once per frame
@@ -46,14 +42,12 @@ public class GameManager : MonoBehaviour
     {
         isGaming = true;
         videoManager.VideoStart();
-        currentBarBehaviour.CurrentBarStart();
     }
 
     public void GamePause()
     {
         isGaming = false;
         videoManager.VideoPause();
-        currentBarBehaviour.CurrentBarPause();
     }
 
     public void OnClickStopButton()
@@ -65,7 +59,6 @@ public class GameManager : MonoBehaviour
     {
         isGaming = false;
         videoManager.VideoStop();
-        currentBarBehaviour.CurrentBarStop();
     }
 
     public void OnClickInitButton()
