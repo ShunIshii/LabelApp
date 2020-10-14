@@ -24,6 +24,7 @@ public class GraphGenerator : MonoBehaviour
     public List<GameObject> pointsList;
     [SerializeField] private GameObject pointPrefab;
     [SerializeField] private GameObject linePrefab;
+    [SerializeField] private GameObject plotsObj;
 
     // Start is called before the first frame update
     void Start()
@@ -49,7 +50,7 @@ public class GraphGenerator : MonoBehaviour
         pointsList = new List<GameObject>();
         foreach (var p in points.Select((value, index) => new { value, index}))
         {
-            GameObject newPoint = Instantiate(pointPrefab, transform.position + new Vector3(startPos + interval * p.index, p.value.y * 5, 0), Quaternion.identity, transform);
+            GameObject newPoint = Instantiate(pointPrefab, transform.position + new Vector3(startPos + interval * p.index, p.value.y * 5, 0), Quaternion.identity, plotsObj.transform);
             newPoint.GetComponent<Button>().onClick.AddListener(() => { currentBarBehaviour.OnClickPoint(p.index); });
             pointsList.Add(newPoint);
             if (p.index != 0)
@@ -61,7 +62,7 @@ public class GraphGenerator : MonoBehaviour
                 Vector3 newPosition = pointA.transform.position + dtPos / 2;
                 double newRotation = Math.Atan2(dtPos.y, dtPos.x) * 180d / Math.PI;
 
-                GameObject line = Instantiate(linePrefab, newPosition, Quaternion.Euler(0, 0, (float)newRotation), transform);
+                GameObject line = Instantiate(linePrefab, newPosition, Quaternion.Euler(0, 0, (float)newRotation), plotsObj.transform);
                 
                 // Chage line length
                 RectTransform t = line.GetComponent<RectTransform>();
